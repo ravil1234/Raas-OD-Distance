@@ -1,0 +1,1 @@
+/bin/python3 /home/ravil/Rivigo/PythonScript/Raas-OD-Distance/src/script.py

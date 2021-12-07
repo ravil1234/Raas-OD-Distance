@@ -1,0 +1,15 @@
+Problem Statement:
+list of orderiDS calculate dist between 
+origin - destination 
+loading - origin 
+destination - unloading warehouse
+
+1.Http Call to get list of orderId using date
+2.List of orderId -> Get LAT LNG of 
+originLane , destinationLane , originConsignorAddress,destinationConsignorAddress
+3. Calculate  from google api
+
+K (Previous unloading) -> X (consignor loading point)-> O (origin lane)-> D(destination lane) -> Y(consignor ulp)
+
+
+
