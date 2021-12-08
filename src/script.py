@@ -2,6 +2,7 @@ import json
 import sys
 
 sys.path.append('/home/ravil/Rivigo/PythonScript/Raas-OD-Distance/config')
+import datetime
 from collections import defaultdict
 
 import DbConnection as config
@@ -20,6 +21,10 @@ def mergeTwoListOfDict(l1,l2):
     l3 = d.values()
     return l3    
 
+def convertDateToEpoch(date):
+    dateString = datetime.datetime.strptime(date, "%d/%m/%Y - %H:%M:%S")
+    return str(int(datetime.datetime.timestamp(dateString))*1000)
+
 def calculateGoogleMapDistance(origin_latitude,origin_longitude,
                                 destination_latitude,destination_longitude):
     distance = gmaps.distance_matrix([str(origin_latitude) + " " + str(origin_longitude)], 
@@ -28,7 +33,11 @@ def calculateGoogleMapDistance(origin_latitude,origin_longitude,
     if distance['status']=='OK':                             
         return distance['distance']['text']
     else:
-        print("----------Invalid Distance------")
+        print("----------Invalid Distance------ for :",
+            origin_latitude ,
+            origin_longitude,destination_latitude,
+            destination_longitude)
+        print('google_distance',distance)    
         return '0 km'    
 
 def calculateDistance(result):
@@ -74,10 +83,12 @@ mysql_db=config.connect()
 query=query.Query(mysql_db) 
 print("------------DB Connected-------")
 print(query.showDatabases())
-fromTime=input("Enter from timestamp:")
-toTime=input("Enter to timestamp:")
-#1637964045112 1638433904259
-orderIds=query.getListOfOrderId(fromTime , toTime)
+fromTime=input("Enter from date in format dd/mm/yyyy - hh:mm:ss : ")
+toTime=input("Enter to date in format dd/mm/yyyy - hh:mm:ss : ")
+fromTimestamp =convertDateToEpoch(fromTime.strip())
+toTimestamp =convertDateToEpoch(toTime.strip())
+orderIds=query.getListOfOrderId(fromTimestamp, toTimestamp)
+
 print("------List of order Booking Ids---------\n")
 print(orderIds)
 print("---------Getting lat long of consignor Address source and destination------")
