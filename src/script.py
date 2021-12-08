@@ -73,7 +73,11 @@ def calculateDistance(result):
 mysql_db=config.connect()
 query=query.Query(mysql_db) 
 print("------------DB Connected-------")
-orderIds=query.getListOfOrderId('1637964045112' , '1638433904259')
+print(query.showDatabases())
+fromTime=input("Enter from timestamp:")
+toTime=input("Enter to timestamp:")
+#1637964045112 1638433904259
+orderIds=query.getListOfOrderId(fromTime , toTime)
 print("------List of order Booking Ids---------\n")
 print(orderIds)
 print("---------Getting lat long of consignor Address source and destination------")
