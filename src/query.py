@@ -3,7 +3,7 @@ class Query:
       self.dbConnect = dbConnect
     
     def getCursor(self):
-        return self.dbConnect.cursor()
+        return self.dbConnect.cursor(buffered=True)
     def showDatabases(self):
         cursor =self.getCursor()
         cursor.execute("SHOW DATABASES")
@@ -99,11 +99,11 @@ class Query:
                     left join (
                     SELECT order_booking_id , vehicle_number FROM raas_matching_engine.vehicle_matching 
                     where 
-                    status = 'ACCEPTED' AND order_booking_id =%s
+                    status = 'ACCEPTED' AND order_booking_id !=%s
                     order by created_timestamp desc) old on old.vehicle_number=cur.vn;
         """,(orderId,orderId))
         result = cursor.fetchone()
-        if type(result) == type(None):
+        if type(result) == type(None) or type(result[0])==type(None):
            return ''
         else:
             return result[0]
@@ -118,10 +118,10 @@ class Query:
                 raas_metadata_backend.consignor_address ca ON ca.id = o.destination_consignor_address_id
                 LEFT JOIN
                 raas_metadata_backend.address a ON ca.address_id = a.id  where o.order_booking_id= %s;
-                """,(orderId,))
+                """,(orderId,))      
         result=cursor.fetchone()
         if type(result) == type(None):
-           return {}
+            return {}
         else:
             return {"orderBookingId":result[0],
                     "unloadingLat":result[1],

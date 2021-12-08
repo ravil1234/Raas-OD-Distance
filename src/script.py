@@ -50,8 +50,11 @@ def calculateDistance(result):
         orderId=query.getOrderIdForVehicle(x['orderBookingId'])
         dist_prev_unload_load='0 km'
         if orderId != '':
+            print("prevOrderId",orderId)
             previousOrderUnloadingLocation=query.getDestinationGeoLocation(orderId) # k 
+            print("prev:",previousOrderUnloadingLocation,bool(previousOrderUnloadingLocation))
             if bool(previousOrderUnloadingLocation):
+                print("prev:",previousOrderUnloadingLocation)
                 dist_prev_unload_load=calculateGoogleMapDistance(
                 previousOrderUnloadingLocation['unloadingLat'],
                 previousOrderUnloadingLocation['unloadingLng'],
