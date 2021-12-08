@@ -24,7 +24,7 @@ def calculateGoogleMapDistance(origin_latitude,origin_longitude,
                                 destination_latitude,destination_longitude):
     distance = gmaps.distance_matrix([str(origin_latitude) + " " + str(origin_longitude)], 
                                     [str(destination_latitude) + " " + str(destination_longitude)], 
-                                    mode='walking')['rows'][0]['elements'][0] 
+                                    mode='driving')['rows'][0]['elements'][0] 
     if distance['status']=='OK':                             
         return distance['distance']['text']
     else:
@@ -50,9 +50,7 @@ def calculateDistance(result):
         orderId=query.getOrderIdForVehicle(x['orderBookingId'])
         dist_prev_unload_load='0 km'
         if orderId != '':
-            print("prevOrderId",orderId)
             previousOrderUnloadingLocation=query.getDestinationGeoLocation(orderId) # k 
-            print("prev:",previousOrderUnloadingLocation,bool(previousOrderUnloadingLocation))
             if bool(previousOrderUnloadingLocation):
                 print("prev:",previousOrderUnloadingLocation)
                 dist_prev_unload_load=calculateGoogleMapDistance(

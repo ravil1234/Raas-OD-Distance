@@ -78,7 +78,8 @@ class Query:
         orderIdList=[]
         cursor.execute("""select order_booking_id 
         from raas_order_metadata.order_detail 
-        where created_timestamp between  
+        where order_status_id not in (100,500) 
+        AND created_timestamp between  
         %s and %s
         """,(fromDate,toDate))
         for x in cursor:
